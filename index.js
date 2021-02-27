@@ -38,11 +38,11 @@ app.get('/', (request, response) => {
 app.get('/api/notes', (request, response) => {
     response.json(notes)
 })
- 
+
 app.get('/api/notes/:id', (request, response) => {
     const id = Number(request.params.id)
     const note = notes.find(n => n.id === id)
-    if(note) {
+    if (note) {
         response.json(note)
     }
     else {
@@ -58,8 +58,8 @@ app.delete('/api/notes/:id', (request, response) => {
 
 app.post('/api/notes', (request, response) => {
     const note = request.body
-    
-    if(!note || !note.content) {
+
+    if (!note || !note.content) {
         return response.status(400).json({
             error: 'note.content is missing'
         })
@@ -73,20 +73,20 @@ app.post('/api/notes', (request, response) => {
         content: note.content,
         date: new Date().toISOString(),
         important: note.important !== undefined ? note.important : false
-    } 
+    }
     notes = [...notes, newNote]
     response.status(201).json(newNote)
 })
 
 app.use((request, response) => {
     console.log(request.path)
-    
+
     response.status(404).json({
         error: 'Not found'
     })
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 // te aseguras que el servidor está levantado antes de ejecutar el console.log
 app.listen(PORT, () => {
     console.log('Server running on port', PORT)
