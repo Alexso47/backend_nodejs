@@ -1,0 +1,10 @@
+rd -rf build --------------------------------------------> elimino el build ya creado
+cd ../notes-app-full-stack-bootcamp 
+npm run build --prod -------------------------------> creo nuevo build
+cd ../notes-backend
+mkdir build
+cd ../notes-app-full-stack-bootcamp 
+xcopy /E build ../notes-backend/build ----------> copio build en el backend
+git add .  ----------------------------------------------> subo los cambios
+git commit -m uibuild 
+git push heroku main -------------------------------> lo pusheo al main del repos del deployer (heroku)
