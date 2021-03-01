@@ -115,7 +115,7 @@ app.use(handleErrors)
 // Cuando entra en el handleErrors es pq se ha hecho un next desde alguno de los controladores y se le ha pasado
 // el error como parametro
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log('Server running on port', PORT)
 })
