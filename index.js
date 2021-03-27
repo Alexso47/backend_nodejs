@@ -10,17 +10,27 @@ const app = express()
 const cors = require('cors')
 const { response } = require('express')
 
+// Utilizando Env https://humanwhocodes.com/blog/2021/02/introducing-env-javascript-environment-variables/#fn:1
+const { Env } = require("@humanwhocodes/env");
+const env = new Env()
+
+// Utilizando dotenv
 require('dotenv').config()
 // Ejecuta el archivo env y lo asigna a la variable process.env
 
+// Middlewares
 const handleErrors = require('./middleware/handleErrors')
 const notFound = require('./middleware/notFound')
 // const logger = require('./middleware/logger')
+
+
+// Models
 const Note = require('./models/Note')
 
 app.use(cors())
 app.use(express.json())
-app.use(express.static('build')) //INCLUYE EL FRONT EN EL MISMO DOMINIO
+// Se incluye el front como static
+app.use(express.static('build'))
 app.use(express.static('images'))
 
 /* ---------------- Sentry features ---------------*/
@@ -38,13 +48,15 @@ app.use(express.static('images'))
 //     tracesSampleRate: 1.0,
 // });
 
-/* ---------------- Sentry features ---------------*/
 // // RequestHandler creates a separate execution context using domains, so that every
 // // transaction/span/breadcrumb is attached to its own Hub instance
 // app.use(Sentry.Handlers.requestHandler());
 // // TracingHandler creates a trace for every incoming request
 // app.use(Sentry.Handlers.tracingHandler());
 
+
+
+// Logger middleware
 // app.use(logger)
 
 app.get('/', (request, response) => {
@@ -115,7 +127,16 @@ app.use(handleErrors)
 // Cuando entra en el handleErrors es pq se ha hecho un next desde alguno de los controladores y se le ha pasado
 // el error como parametro
 
-const PORT = process.env.PORT || 3001
+
+// Usando Env (valor 3001 por defecto si no encuentra la variable PORT)
+// const PORT = env.get("PORT", 3001)
+
+// De esta manera devuelve el valor que primero encuentre
+const PORT = env.first(["PORT", "HTTP_PORT"], 8080);
+
+// Usando dotenv
+// const PORT = process.env.PORT || 3001
+
 app.listen(PORT, () => {
     console.log('Server running on port', PORT)
 })
