@@ -19,8 +19,8 @@ require('dotenv').config()
 // Ejecuta el archivo env y lo asigna a la variable process.env
 
 // Middlewares
-const handleErrors = require('./middleware/handleErrors')
-const notFound = require('./middleware/notFound')
+const handleErrors = require('./utils/middleware/handleErrors')
+const notFound = require('./utils/middleware/notFound')
 // const logger = require('./middleware/logger')
 
 

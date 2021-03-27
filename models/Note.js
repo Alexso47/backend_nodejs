@@ -15,7 +15,10 @@ noteSchema.set('toJSON', {
     }
 })
 
-const Note = mongoose.model('Note', noteSchema)
+module.exports = mongoose.model('Note', noteSchema)
+
+
+// const Note = mongoose.model('Note', noteSchema)
 
 // const note = new Note({
 //     content: 'Browser can execute only JavaScript',
@@ -34,5 +37,3 @@ const Note = mongoose.model('Note', noteSchema)
 //     })
 //     mongoose.connection.close()
 // })
-
-module.exports = Note
