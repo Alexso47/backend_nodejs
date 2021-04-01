@@ -2,7 +2,9 @@ POST http://localhost:3001/api/notes
 Content-type: application/json
 
 {
-    "content": "Esto es una nueva nota"
+    "content": "Cositas por aquí",
+    "important": true,
+    "userId": "6066078806a99b0a0805b091"
 }
 
 ###

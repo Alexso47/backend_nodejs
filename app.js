@@ -5,6 +5,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const notesRouter = require('./controllers/notes')
+const usersRouter = require('./controllers/users')
 
 // Middlewares
 const handleErrors = require('./utils/middleware/handleErrors')
@@ -30,7 +31,7 @@ mongoose.connect(connectionString, {
     })
 
 process.on('uncaughtException', () => {
-    mongoose.connection.diconnect()
+    mongoose.disconnect()
 })
 
 app.use(cors())
@@ -41,6 +42,7 @@ app.use(express.json())
 
 // end-points
 app.use('/api/notes', notesRouter)
+app.use('/api/users', usersRouter)
 
 // Middlewares control de errores
 app.use(notFound)
