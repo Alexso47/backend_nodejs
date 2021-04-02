@@ -1,8 +1,9 @@
-PUT http://localhost:3001/api/notes/603bd9903bdf54361052a53e 
+PUT http://localhost:3001/api/notes/60678714a3ba6a2fc081b543
 Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsZXhzbzQ3IiwiaWQiOiI2MDY3ODZjNWEzYmE2YTJmYzA4MWI1NDIiLCJpYXQiOjE2MTczOTc0NjIsImV4cCI6MTYxODAwMjI2Mn0.kPhr0pM_Ku-8KYvnLRsUdhT5_KmudnmPj9a399QoH50
 
 {
     "content": "dale dale",
-    "important": true
+    "important": false
 }
 

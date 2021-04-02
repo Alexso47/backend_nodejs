@@ -16,8 +16,7 @@ describe('testing notes', () => {
         await User.deleteMany({})
 
         let notesId = initialNotes.map(note => note._id)
-        const passwordHash = await bcrypt.hash('pswd', 10)
-        const newUser = new User({ _id: userId, username: 'AlexsoTesteandoNotes', name: 'AlexTestNotes', passwordHash, notes: notesId })
+        const newUser = new User({ _id: userId, username: 'AlexsoTesteandoNotes', name: 'AlexTestNotes', passwordHash: 'pswd', notes: notesId })
         await newUser.save()
 
         for (let note of initialNotes) {

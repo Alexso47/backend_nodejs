@@ -1,21 +1,23 @@
 const notesRouter = require('express').Router()
 
 // Models
-const Note = require('../models/Note')
-const User = require('../models/User')
+const Note = require('../models/note')
+const User = require('../models/user')
 
 notesRouter.get('/', async (request, response) => {
     const notes = await Note.find({}).populate('user', { username: 1, name: 1 })
     return response.status(200).json(notes)
 })
 
-notesRouter.get('/:id', (request, response, next) => {
-    const id = request.params.id
-    Note.findById(id).then(note => {
-        return note
-            ? response.json(note)
-            : response.status(404).end()
-    }).catch(next)
+notesRouter.get('/:id', async (request, response, next) => {
+    try {
+        const id = request.params.id
+        const note = await Note.findById(id)
+        return response.status(200).json(note)
+    }
+    catch (error) {
+        next(error)
+    }
 })
 
 notesRouter.delete('/:id', async (request, response, next) => {
@@ -30,24 +32,24 @@ notesRouter.delete('/:id', async (request, response, next) => {
 })
 
 notesRouter.post('/', async (request, response, next) => {
-    const note = request.body
-
-    const user = await User.findById(note.userId)
-
-    if (!note || !note.content) {
-        return response.status(400).json({
-            error: 'note.content is missing'
-        })
-    }
-
-    const newNote = new Note({
-        content: note.content,
-        date: new Date(),
-        important: note.important || false,
-        user: user._id
-    })
-
     try {
+        const { userId } = request
+        const user = await User.findById(userId)
+
+        const note = request.body
+        if (!note || !note.content) {
+            return response.status(400).json({
+                error: 'note.content is missing'
+            })
+        }
+
+        const newNote = new Note({
+            content: note.content,
+            date: new Date(),
+            important: note.important || false,
+            user: user._id
+        })
+
         const savedNote = await newNote.save()
         user.notes = user.notes.concat(savedNote._id)
         await user.save()
@@ -58,7 +60,7 @@ notesRouter.post('/', async (request, response, next) => {
     }
 })
 
-notesRouter.put('/:id', (request, response, next) => {
+notesRouter.put('/:id', async (request, response, next) => {
     const id = request.params.id
     const note = request.body
 
@@ -67,11 +69,15 @@ notesRouter.put('/:id', (request, response, next) => {
         important: note.important
     }
 
-    // El objeto nuevo se devuelve cuando especificas el tercer argumento, 
-    // de normal te devuelve el objeto que se actualiza
-    Note.findByIdAndUpdate(id, newNoteInfo, { new: true })
-        .then(result => response.json(result))
-        .catch(next)
+    try {
+        // El objeto nuevo se devuelve cuando especificas el tercer argumento, 
+        // de normal te devuelve el objeto que se actualiza
+        const noteUpdated = await Note.findByIdAndUpdate(id, newNoteInfo, { new: true })
+        response.status(200).json(noteUpdated)
+    }
+    catch (error) {
+        next(error)
+    }
 })
 
 module.exports = notesRouter

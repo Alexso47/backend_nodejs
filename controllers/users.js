@@ -1,5 +1,5 @@
 const usersRouter = require('express').Router()
-const User = require('../models/User')
+const User = require('../models/user')
 const bcrypt = require('bcrypt')
 const { isLength, isAlphanumeric, isAlpha, isStrongPassword } = require('validator')
 
@@ -40,7 +40,6 @@ usersRouter.post('/', async (request, response) => {
         })
         return;
     }
-
     const { username, name, password } = body
 
     // complejidad del hash

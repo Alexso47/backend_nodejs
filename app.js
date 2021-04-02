@@ -6,11 +6,13 @@ const app = express()
 const cors = require('cors')
 const notesRouter = require('./controllers/notes')
 const usersRouter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
 
 // Middlewares
 const handleErrors = require('./utils/middleware/handleErrors')
 const notFound = require('./utils/middleware/notFound')
 const logger = require('./utils/consoleLogger')
+const userExtractor = require('./utils/middleware/userExtractor')
 
 // MongoDB
 const mongoose = require('mongoose')
@@ -41,8 +43,9 @@ app.use(express.static('build'))
 app.use(express.json())
 
 // end-points
-app.use('/api/notes', notesRouter)
+app.use('/api/notes', userExtractor, notesRouter)
 app.use('/api/users', usersRouter)
+app.use('/api/login', loginRouter)
 
 // Middlewares control de errores
 app.use(notFound)
