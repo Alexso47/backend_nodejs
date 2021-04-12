@@ -38,12 +38,12 @@ usersRouter.post('/', async (request, response) => {
         response.status(400).json({
             errors: errors
         })
-        return;
+        return
     }
     const { username, name, password } = body
 
     // complejidad del hash
-    const saltRounds = 10;
+    const saltRounds = 10
     const passwordHash = await bcrypt.hash(password, saltRounds)
     const user = new User({
         username,
